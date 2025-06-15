@@ -20,10 +20,10 @@ public class InfinitePlatformSpawner : PlatformSpawner
     protected override void SpawnPlatform(Platform spawnPlatform)
     {
         GameObject newPlatform = Instantiate(spawnPlatform,
-            transform.forward * spawnCoordinate,
+            transform.forward * spawnDirection,
             transform.rotation).gameObject;
         spawnedPlatforms.Add(newPlatform);
-        spawnCoordinate += platformLength;
+        spawnDirection += platformLength;
     }
     
 
@@ -37,10 +37,11 @@ public class InfinitePlatformSpawner : PlatformSpawner
 
     private void Update()
     {
-        if (playerTransform.position.z > spawnCoordinate - 
+        if (playerTransform.position.z > spawnDirection - 
             (maxPlatformCount * platformLength))
         {
             SpawnPlatform(getRandomPlatform());
+            SpawnCoin(spawnDirection);
             RemovePlatform();
         }
     }

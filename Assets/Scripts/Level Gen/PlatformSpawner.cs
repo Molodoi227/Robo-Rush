@@ -8,7 +8,11 @@ public class PlatformSpawner : MonoBehaviour
     [SerializeField] protected Platform startPlatform;
     [SerializeField] protected int maxPlatformCount;
     [SerializeField] protected float platformLength;
-    protected float spawnCoordinate;
+    protected float spawnDirection;
+
+    [SerializeField] protected GameObject coinPrefab;
+
+    [SerializeField] protected float lineSpacing;
 
     protected Platform getRandomPlatform()
     {
@@ -19,9 +23,9 @@ public class PlatformSpawner : MonoBehaviour
     protected virtual void SpawnPlatform(Platform spawnplatform)
     {
         Instantiate(spawnplatform, 
-            transform.forward * spawnCoordinate,
+            transform.forward * spawnDirection,
             transform.rotation);
-        spawnCoordinate += platformLength;
+        spawnDirection += platformLength;
     }
 
     protected virtual void GeneratePlatforms()
@@ -31,5 +35,13 @@ public class PlatformSpawner : MonoBehaviour
         {
             SpawnPlatform(getRandomPlatform());
         }
+    }
+
+    protected virtual GameObject SpawnCoin(float zPos)
+    {
+        // row = 1, 0, 1
+        int row = Random.Range(0, 3) - 1;
+        Vector3 pos = new(lineSpacing*row, 1f, zPos);
+        return Instantiate(coinPrefab, pos, Quaternion.identity);
     }
 }
